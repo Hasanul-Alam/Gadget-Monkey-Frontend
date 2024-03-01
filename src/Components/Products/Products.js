@@ -6,10 +6,25 @@ const Products = () => {
 
     useEffect(() => {
         axios.get('http://localhost:5000/products')
-        .then( (response) => {
-            setProducts(response.data)
-          })
+            .then((response) => {
+                setProducts(response.data)
+            })
     }, []);
+
+    const handleDelete = (id) => {
+        const confirmation = window.confirm('Are you sure to delete this item?');
+        if (confirmation) {
+            const url = `http://localhost:5000/products/${id}`;
+            axios.delete(url)
+                .then(res => {
+                    if(res.data.deletedCount > 0){
+                        alert('Item is deleted successfully.');
+                        const remainingProducts = products.filter(product => product._id !== id);
+                        setProducts(remainingProducts);
+                    }
+                })
+        }
+    }
     return (
         <div>
             <h1>Total Products: {products.length}</h1>
@@ -30,7 +45,7 @@ const Products = () => {
                             <td>{product.quantity}</td>
                             <td className='px-0 w-25'>
                                 <button className="btn btn-success">Update</button>
-                                <button className="btn btn-danger ms-2">X</button>
+                                <button onClick={() => handleDelete(product._id)} className="btn btn-danger ms-2">X</button>
                             </td>
                         </tr>)}
                     </tbody>
