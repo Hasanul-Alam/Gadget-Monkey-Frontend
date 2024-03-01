@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
@@ -35,6 +36,8 @@ const Products = () => {
                             <th>Product Name</th>
                             <th>Price</th>
                             <th>Quantity</th>
+                            <th>Offer</th>
+                            <th>Neat Price</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -43,8 +46,10 @@ const Products = () => {
                             <td>{product.name}</td>
                             <td>{product.price}</td>
                             <td>{product.quantity}</td>
+                            <td>{product.offer}%</td>
+                            <td>{product.price - (product.price * product.offer / 100)}</td>
                             <td className='px-0 w-25'>
-                                <button className="btn btn-success">Update</button>
+                                <NavLink to={`/update/products/${product._id}`}><button className="btn btn-success">Update</button></NavLink>
                                 <button onClick={() => handleDelete(product._id)} className="btn btn-danger ms-2">X</button>
                             </td>
                         </tr>)}
