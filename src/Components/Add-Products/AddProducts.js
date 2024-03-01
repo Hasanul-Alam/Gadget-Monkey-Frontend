@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useRef } from 'react';
 
 const AddProducts = () => {
@@ -12,8 +13,20 @@ const AddProducts = () => {
         const price = priceRef.current.value;
         const quantity = quantityRef.current.value;
 
-        console.log(name, price, quantity);
-        event.target.reset();
+        const newProduct = {
+            name: name, 
+            price: price, 
+            quantity: quantity
+        }
+
+        axios.post('http://localhost:5000/products', newProduct)
+        .then(res => {
+            if(res.data.insertedId){
+                alert('Alhamdulillah your product is successfully added');
+                event.target.reset();
+            }
+        })
+        
     }
     return (
         <div>

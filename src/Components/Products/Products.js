@@ -1,18 +1,20 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 const Products = () => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/products')
-            .then(res => res.json())
-            .then(data => setProducts(data))
+        axios.get('http://localhost:5000/products')
+        .then( (response) => {
+            setProducts(response.data)
+          })
     }, []);
     return (
         <div>
             <h1>Total Products: {products.length}</h1>
-            <div class="container">
-                <table class="table table-striped">
+            <div className="container">
+                <table className="table table-striped">
                     <thead>
                         <tr>
                             <th>Product Name</th>
@@ -22,7 +24,7 @@ const Products = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map(product => <tr>
+                        {products.map(product => <tr key={product._id}>
                             <td>{product.name}</td>
                             <td>{product.price}</td>
                             <td>{product.quantity}</td>
